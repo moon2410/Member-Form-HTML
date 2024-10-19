@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membership Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-top: 30px;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 30px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #444;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #f9f9f9;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #007BFF;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Nirontor Welfare Organization</h1>
+    <h1>Membership Form</h1>
+	
+    <form id="myForm">
+        <label for="fullName">Full Name:</label>
+        <input type="text" id="fullName" name="fullName" required>
+        
+        <label for="mobile">Mobile:</label>
+        <input type="tel" id="mobile" name="mobile" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" required>
+
+        <label for="fatherName">Father's Name:</label>
+        <input type="text" id="fatherName" name="fatherName" required>
+
+        <label for="motherName">Mother's Name:</label>
+        <input type="text" id="motherName" name="motherName" required>
+
+        <label for="education">School/College/University:</label>
+        <input type="text" id="education" name="education" required>
+
+        <label for="organization">Do you work with any other organization?</label>
+        <select id="organization" name="organization">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+
+        <label for="membership">Join as a member:</label>
+        <select id="membership" name="membership">
+            <option value="Permanent">Permanent</option>
+            <option value="General">General</option>
+            <option value="Volunteer">Volunteer</option>
+        </select>
+
+        <label for="photo">Photo:</label>
+        <input type="file" id="photo" name="photo" accept="image/*">
+
+        <label for="nid">NID/Birth Certificate:</label>
+        <input type="file" id="nid" name="nid" accept=".pdf,.jpg,.jpeg,.png">
+
+        <button type="button" onclick="autoFill()">Auto-Fill</button>
+        <button type="button" onclick="downloadPDF()">Download as PDF</button>
+        <button type="button" onclick="downloadExcel()">Download as Excel</button>
+    </form>
+
+    <!-- External libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+    <script>
+        // Auto-fill logic
+        function autoFill() {
+            document.getElementById("fullName").value = "John Doe";
+            document.getElementById("mobile").value = "1234567890";
+            document.getElementById("email").value = "john.doe@example.com";
+            document.getElementById("address").value = "123 Main St";
+            document.getElementById("fatherName").value = "Father Doe";
+            document.getElementById("motherName").value = "Mother Doe";
+            document.getElementById("education").value = "XYZ University";
+            document.getElementById("organization").value = "No";
+            document.getElementById("membership").value = "General";
+        }
+
+        // Download as PDF
+        function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            const name = document.getElementById("fullName").value;
+            const mobile = document.getElementById("mobile").value;
+            const email = document.getElementById("email").value;
+            const address = document.getElementById("address").value;
+            const fatherName = document.getElementById("fatherName").value;
+            const motherName = document.getElementById("motherName").value;
+            const education = document.getElementById("education").value;
+            const organization = document.getElementById("organization").value;
+            const membership = document.getElementById("membership").value;
+
+            doc.text(`Full Name: ${name}`, 10, 10);
+            doc.text(`Mobile: ${mobile}`, 10, 20);
+            doc.text(`Email: ${email}`, 10, 30);
+            doc.text(`Address: ${address}`, 10, 40);
+            doc.text(`Father's Name: ${fatherName}`, 10, 50);
+            doc.text(`Mother's Name: ${motherName}`, 10, 60);
+            doc.text(`School/College/University: ${education}`, 10, 70);
+            doc.text(`Works with other organization: ${organization}`, 10, 80);
+            doc.text(`Membership Type: ${membership}`, 10, 90);
+
+            doc.save('membership-form.pdf');
+        }
+
+        // Download as Excel
+        function downloadExcel() {
+            const data = [
+                ['Full Name', 'Mobile', 'Email', 'Address', 'Father\'s Name', 'Mother\'s Name', 'Education', 'Other Organization', 'Membership Type'],
+                [
+                    document.getElementById("fullName").value,
+                    document.getElementById("mobile").value,
+                    document.getElementById("email").value,
+                    document.getElementById("address").value,
+                    document.getElementById("fatherName").value,
+                    document.getElementById("motherName").value,
+                    document.getElementById("education").value,
+                    document.getElementById("organization").value,
+                    document.getElementById("membership").value
+                ]
+            ];
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Membership Data");
+            XLSX.writeFile(wb, "membership-data.xlsx");
+        }
+    </script>
+</body>
+</html>
